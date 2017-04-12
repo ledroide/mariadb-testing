@@ -1,33 +1,35 @@
 version: '2'
 services:
-  mariadb-master:
+  mariadb-master1:
     image: 'bitnami/mariadb:latest'
     ports:
       - '3306'
     volumes:
       - $HOME/temp/mariadb:/bitnami/mariadb
     environment:
+      - ALLOW_EMPTY_PASSWORD=yes
       - MARIADB_REPLICATION_MODE=master
       - MARIADB_REPLICATION_USER=repl_user
-      - MARIADB_REPLICATION_PASSWORD=repl_password
-      - MARIADB_ROOT_PASSWORD=master_root_password
+      - MARIADB_REPLICATION_PASSWORD=toto
+      - MARIADB_ROOT_PASSWORD=toto
       - MARIADB_USER=my_user
       - MARIADB_PASSWORD=my_password
       - MARIADB_DATABASE=my_database
-  mariadb-slave:
+  mariadb-master2:
     image: 'bitnami/mariadb:latest'
     ports:
       - '3306'
     depends_on:
-      - mariadb-master
+      - mariadb-master1
     environment:
+      - ALLOW_EMPTY_PASSWORD=yes
       - MARIADB_REPLICATION_MODE=slave
       - MARIADB_REPLICATION_USER=repl_user
-      - MARIADB_REPLICATION_PASSWORD=repl_password
-      - MARIADB_ROOT_PASSWORD=slave_root_password
+      - MARIADB_REPLICATION_PASSWORD=toto
+      - MARIADB_ROOT_PASSWORD=toto
       - MARIADB_MASTER_HOST=mariadb-master
       - MARIADB_MASTER_PORT=3306
-      - MARIADB_MASTER_ROOT_PASSWORD=master_root_password
+      - MARIADB_MASTER_ROOT_PASSWORD=toto
       - MARIADB_USER=my_user
       - MARIADB_PASSWORD=my_password
       - MARIADB_DATABASE=my_database
